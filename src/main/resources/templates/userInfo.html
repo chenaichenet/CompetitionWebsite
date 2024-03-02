@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment::head(~{::title})">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>用户详情</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/my.css}" href="../static/css/my.css"/>
+    <link rel="icon" href="../static/images/material/favicon.ico" th:href="@{/images/material/favicon.ico}">
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragment :: menu(null)" class="ui segment m-padded-tb-mini"></nav>
+
+<!-- 中间内容 -->
+<div class=" m-container m-padded-tb-large">
+    <div class="ui container">
+        <div class="ui stackable grid">
+            <!--左边卡片-->
+            <div class="five wide column">
+                <div class="ui card">
+                    <div class="ui image" th:replace="_fragment::images(${user.avatar})">
+                        <img src="../static/images/me.jpg">
+                    </div>
+                    <div class="content">
+                        <a class="header" th:text="${user.username}">陈十七</a>
+                        <div class="meta">
+                            <span class="date" th:value="${user.createTime}">2021</span>年加入
+                        </div>
+                        <div class="description"><span th:text="${user.description}">湖南农业大学计算机专业在校生。</span></div>
+                    </div>
+                    <div class="extra content">
+                        <a href="mailto:[[${user.name}]]"><i class="envelope icon"></i><span th:text="${user.email}"> 123456@yeah.net </span></a>
+                    </div>
+                </div>
+            </div>
+
+            <!--右边信息-->
+            <div class="eleven wide column">
+                <div class="ui pointing menu">
+                    <a id="userInfo_btn" class="item active" type="button" th:href="@{/user/userInfo(userId=${user.id})}">基本信息</a>
+                    <a id="userCompetition_btn" type="button" class="user_btn item">发布比赛</a>
+                    <a id="enrollCompetition_btn" type="button" class="item">报名比赛</a>
+                    <div class="right menu">
+                        <div class="item">
+                            <div class="ui transparent icon input">
+                                <input type="text" placeholder="搜索...">
+                                <i class="search link icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--个人信息-->
+                <div id="userInfo" class="ui">
+                    <form class="ui segment form" action="#" th:action="@{/user/update}" method="post">
+                        <div class="field">
+                            <div class="ui labeled input">
+                                <div class="ui label" style="text-align: center;width: 80px">用户名</div>
+                                <input name="username" type="text" value="陈十七" th:value="${user.username}">
+                                <div class="ui label" style="text-align: center;width: 80px" th:if="${session.user.id} == ${user.id}">
+                                    <div style="float: right" class="ui inline dropdown">
+                                        <div class="text" th:replace="_fragment :: avatar(n=${user.avatar},content=~{},span=~{})">
+                                            <img class="ui avatar image" src="../static/images/avatar/avatar1.png">
+                                        </div>
+                                        <i class="dropdown icon"></i>
+                                        <!--头像-->
+                                        <div class="menu">
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar1.png}" src="../static/images/avatar/avatar1.png">
+                                                <input name="avatar" style="display: none" type="text" value="0">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar2.png}" src="../static/images/avatar/avatar2.png">
+                                                <input name="avatar" style="display: none" type="text" value="1">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar3.png}" src="../static/images/avatar/avatar3.png">
+                                                <input name="avatar" style="display: none" type="text" value="2">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar4.png}" src="../static/images/avatar/avatar4.png">
+                                                <input name="avatar" style="display: none" type="text" value="3">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar5.png}" src="../static/images/avatar/avatar5.png">
+                                                <input name="avatar" style="display: none" type="text" value="4">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar6.png}" src="../static/images/avatar/avatar6.png">
+                                                <input name="avatar" style="display: none" type="text" value="5">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar7.png}" src="../static/images/avatar/avatar7.png">
+                                                <input name="avatar" style="display: none" type="text" value="6">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar8.png}" src="../static/images/avatar/avatar8.png">
+                                                <input name="avatar" style="display: none" type="text" value="7">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar9.png}" src="../static/images/avatar/avatar9.png">
+                                                <input name="avatar" style="display: none" type="text" value="8">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar10.png}" src="../static/images/avatar/avatar10.png">
+                                                <input name="avatar" style="display: none" type="text" value="9">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar11.png}" src="../static/images/avatar/avatar11.png">
+                                                <input name="avatar" style="display: none" type="text" value="10">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar12.png}" src="../static/images/avatar/avatar12.png">
+                                                <input name="avatar" style="display: none" type="text" value="11">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar13.png}" src="../static/images/avatar/avatar13.png">
+                                                <input name="avatar" style="display: none" type="text" value="12">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar14.png}" src="../static/images/avatar/avatar14.png">
+                                                <input name="avatar" style="display: none" type="text" value="13">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar15.png}" src="../static/images/avatar/avatar15.png">
+                                                <input name="avatar" style="display: none" type="text" value="14">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar16.png}" src="../static/images/avatar/avatar16.png">
+                                                <input name="avatar" style="display: none" type="text" value="15">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar17.png}" src="../static/images/avatar/avatar17.png">
+                                                <input name="avatar" style="display: none" type="text" value="16">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar18.png}" src="../static/images/avatar/avatar18.png">
+                                                <input name="avatar" style="display: none" type="text" value="17">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar19.png}" src="../static/images/avatar/avatar19.png">
+                                                <input name="avatar" style="display: none" type="text" value="18">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar20.png}" src="../static/images/avatar/avatar20.png">
+                                                <input name="avatar" style="display: none" type="text" value="19">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar21.png}" src="../static/images/avatar/avatar21.png">
+                                                <input name="avatar" style="display: none" type="text" value="20">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar22.png}" src="../static/images/avatar/avatar22.png">
+                                                <input name="avatar" style="display: none" type="text" value="21">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar23.png}" src="../static/images/avatar/avatar23.png">
+                                                <input name="avatar" style="display: none" type="text" value="22">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar24.png}" src="../static/images/avatar/avatar24.png">
+                                                <input name="avatar" style="display: none" type="text" value="23">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar25.png}" src="../static/images/avatar/avatar25.png">
+                                                <input name="avatar" style="display: none" type="text" value="24">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar26.png}" src="../static/images/avatar/avatar26.png">
+                                                <input name="avatar" style="display: none" type="text" value="25">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar27.png}" src="../static/images/avatar/avatar27.png">
+                                                <input name="avatar" style="display: none" type="text" value="26">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar28.png}" src="../static/images/avatar/avatar28.png">
+                                                <input name="avatar" style="display: none" type="text" value="27">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar29.png}" src="../static/images/avatar/avatar29.png">
+                                                <input name="avatar" style="display: none" type="text" value="28">
+                                            </div>
+                                            <div class="item">
+                                                <img class="ui avatar image" th:src="@{/images/avatar/avatar30.png}" src="../static/images/avatar/avatar30.png">
+                                                <input name="avatar" style="display: none" type="text" value="29">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui labeled input">
+                                <div class="ui label" style="text-align: center;width: 80px">邮 箱</div>
+                                <input name="email" type="email" value="chenaichenet@yeah.net" th:value="${user.email}">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui labeled input">
+                                <div class="ui label" style="text-align: center;width: 80px">个人简介</div>
+                                <textarea name="description" type="text" rows="5" cols="10" th:text="${user.description}">湖南农业大学计算机专业在校生</textarea>
+                            </div>
+                        </div>
+                        <div class="field" th:if="${session.user.id} == ${user.id}">
+                            <button style="text-align: center;width: 80px;color: #ff6363" class="ui button" type="reset">取消</button>
+                            <button style="text-align: center;width: 80px;float: right;color: #00aaaa" class="ui button" type="submit">保存</button>
+                        </div>
+
+                        <div class="ui error message mini"></div>
+                        <div class="ui message negative mini" th:text="${message}" th:unless="${#strings.isEmpty(message)}">
+                            <i class="close icon"></i>
+                            <div class="header">提示：</div>
+                            <p>更改失败</p>
+                        </div>
+                    </form>
+                </div>
+
+                <!--比赛-->
+                <div class="m-mobile-hide">
+                    <div id="competitionList" class="ui segment" th:fragment="competitionList">
+                        <div class="ui padded vertical segment m-padded-tb-large" th:each="competition:${competitions}">
+                            <div class="ui middle aligned mobile reversed stackable grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header"><a href="competition.html" class="m-black" th:text="${competition.title}" th:href="@{/competition/{id}(id=${competition.id})}" >中国扶贫基金会志愿者招募</a></h3>
+                                    <p class="m-text" th:text="|${competition.description}......|">长期有效；招募方：中国扶贫基金会 | 由国务院扶贫办主管的全国性扶贫公益组织，是中国扶贫公益领域规模最大、最具影响力的公益组织之一。</p>
+                                    <div class="ui grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item" th:replace="_fragment::avatar(${competition.user.avatar},~{::#username},~{})">
+                                                    <img src="../static/images/me.jpg" class="ui avatar image">
+                                                    <div id="username" class="content">
+                                                        <a href="userInfo.html" th:href="@{/user/userInfo}" style="float: bottom" class="header" th:text="${competition.user.username}"><h5>陈十七</h5></a>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar alternate outline icon"></i><span style="display: inline-block;	vertical-align:middle;" th:text="${#dates.format(competition.createTime,'yyyy-MM-dd')}">2020-8-18</span>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i><span style="display: inline-block;	vertical-align:middle;" th:text="${competition.views}">200</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="five wide column right aligned">
+                                            <a href="#" class="ui teal basic label m-padded-mini m-text-thin" th:text="${competition.type.name}">公益活动</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" th:href="@{/competition/{id}(id=${competition.id})}">
+                                        <img src="http://cdn1.52jingsai.com/portal/202012/29/171742imrdr6crj4pmrjbc.jpg" class="ui rounded image" th:src="@{${competition.firstPicture}}" >
+                                    </a>
+                                    <ui class="dropdown">
+                                        <a style="color: black" href="#"><i style="float: right" class="ellipsis horizontal icon"></i></a>
+                                    </ui>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+<!-- 底部 -->
+<footer th:replace="_fragment :: footer"  class="ui inverted vertical segment m-padded-tb-large-half"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script th:inline="javascript">
+    /* 通过按钮中的class值定位到按钮 */
+    $('.menu.toggle').click(function () {
+        /* 点击去除m-mobile-hide样式 */
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    $('.ui.form').form({
+       fields: {
+           username: {
+               identifier: 'username',
+               rules: [{
+                   type: 'empty',
+                   prompt: '用户名不能为空!'
+               }]
+           },
+           email: {
+               identifier: 'email',
+               rules: [{
+                   type: 'empty',
+                   prompt: '邮箱不能为空!'
+               }]
+           }
+       }
+    });
+
+    /* 用户发布的比赛 */
+    $('#userCompetition_btn').click(function (){
+        $('#userInfo').hide();
+        $('#userInfo_btn').removeClass("active");
+        $('#enrollCompetition_btn').removeClass("active");
+        $('#userCompetition_btn').addClass("active");
+        $.ajax({
+            url: '/user/userCompetitions',
+            type: 'get',
+            data: {
+                userId: [[${user.id}]]
+            },
+            success: function (data){
+                $('#competitionList').html(data)
+            }
+        });
+    });
+    /*方法可行*/
+    /*function userCompetitions(){
+        $('#userInfo').hide()
+        $.ajax({
+            url: '/user/userCompetitions',
+            type: 'get',
+            data: {
+                userId: [[${user.id}]]
+            },
+            success: function (data){
+                $('#competitionList').html(data)
+            }
+        });
+    }*/
+
+    /* 用户报名的比赛 */
+    $('#enrollCompetition_btn').click(function (){
+       $('#userInfo').hide();
+       $('#userInfo_btn').removeClass("active");
+       $('#userCompetition_btn').removeClass("active");
+       $('#enrollCompetition_btn').addClass("active");
+       $.ajax({
+          url: '/user/enrollCompetitions',
+          type: 'get',
+          data: {
+              userId: [[${user.id}]]
+          },
+          success: function (data){
+              $('#competitionList').html(data)
+          }
+       });
+    });
+</script>
+</body>
+</html>

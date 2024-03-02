@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragment_admin::head(~{::title})">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>添加分类</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/my.css}" href="../../static/css/my.css"/>
+    <link rel="stylesheet" th:href="@{/lib/editormd/css/editormd.min.css}" href="../../static/lib/editormd/css/editormd.min.css">
+    <link rel="icon" href="../../static/images/material/favicon.ico" th:href="@{/images/material/favicon.ico}">
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="admin/_fragment_admin :: menu(3)" class="ui segment m-padded-tb-mini"></nav>
+
+<!--功能按钮-->
+<div class="ui attached pointing menu">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="types-input.html" th:href="@{/admin/types/input}" class="item active teal">新增</a>
+            <a href="types.html" th:href="@{/admin/types}" class="item">列表</a>
+        </div>
+    </div>
+</div>
+
+<!-- 中间内容 -->
+<div class=" m-container m-padded-tb-large">
+    <div class="ui container">
+        <form action="#" th:action="*{id}==null ? @{/admin/types} : @{/admin/types/{id}(id=*{id})}" class="ui form" method="post" th:object="${type}">
+            <input type="hidden" name="id" th:value="*{id}">
+            <div class="required field">
+                <div class="ui left labeled input">
+                    <label  class="ui teal basic label">名称</label>
+                    <input type="text" name="name" placeholder="分类名称" th:value="*{name}">
+                </div>
+            </div>
+
+            <div class="ui error message"></div>
+
+            <!--后端校验输出，该注解在模板渲染时会生效-->
+            <div class="ui negative message" th:if="${#fields.hasErrors('name')}">
+                <i class="close icon"></i>
+                <div class="header">验证失败</div>
+                <p th:errors="*{name}">提交信息不符合规则</p>
+            </div>
+
+
+            <div class="ui right aligned container">
+                <button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+                <button class="ui teal submit  button">提交</button>
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+
+<!-- 底部 -->
+<footer th:replace="admin/_fragment_admin :: footer" class="ui inverted vertical segment m-padded-tb-large-half"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    /* 通过按钮中的class值定位到按钮 */
+    $('.menu.toggle').click(function () {
+        /* 点击去除m-mobile-hide样式 */
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+    $('.ui.form').form({
+        fields: {
+            title: {
+                identifier: 'name',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入分类名称'
+                }]
+            }
+        }
+    });
+</script>
+</body>
+</html>

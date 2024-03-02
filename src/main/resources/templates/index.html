@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: head(~{::title})">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>大学生竞赛网</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/my.css}" href="../static/css/my.css"/>
+    <link rel="icon" href="../static/images/material/favicon.ico" th:href="@{/images/material/favicon.ico}">
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragment :: menu(1)" class="ui segment m-padded-tb-mini"></nav>
+<!-- 中间内容 -->
+<div class="container m-padded-tiny">
+    <div class="ui container">
+        <div class="ui stackable grid">
+            <!-- 左边比赛列表 -->
+            <div class="eleven wide column">
+                <!-- 头部 -->
+                <div class="ui top attached segment">
+                    <div class="ui middle aligned two column grid">
+                        <div class="column">
+                            <h3 class="ui teal header" th:text="#{index.header}">今日焦点</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 今日焦点 -->
+                <div class="ui attached segment">
+                    <div class="ui padded vertical segment m-padded-tb-large" th:if="${competitions}!=null" th:each="competition:${competitions}">
+                        <div class="ui middle aligned mobile reversed stackable grid">
+                            <div class="eleven wide column">
+                                <h3 class="ui header"><a href="competition.html" class="m-black" th:text="${competition.title}" th:href="@{/competition/{id}(id=${competition.id})}" >中国扶贫基金会志愿者招募</a></h3>
+                                <p class="m-text" th:text="|${competition.description}......|">长期有效；招募方：中国扶贫基金会 | 由国务院扶贫办主管的全国性扶贫公益组织，是中国扶贫公益领域规模最大、最具影响力的公益组织之一。</p>
+                                <div class="ui grid">
+                                    <div class="eleven wide column">
+                                        <div class="ui mini horizontal link list">
+                                            <div class="item" th:replace="_fragment::avatar(${competition.user.avatar},~{::#username},~{})">
+                                                <img src="../static/images/me.jpg" class="ui avatar image">
+                                                <div id="username" class="content">
+                                                    <a href="userInfo.html" th:href="@{/user/userInfo(userId=${competition.user.id})}" style="float: bottom" class="header" th:text="${competition.user.username}"><h5>陈十七</h5></a>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="calendar alternate outline icon"></i><span style="display: inline-block;	vertical-align:middle;" th:text="${#dates.format(competition.createTime,'yyyy-MM-dd')}">2020-8-18</span>
+                                            </div>
+                                            <div class="item">
+                                                <i class="eye icon"></i><span style="display: inline-block;	vertical-align:middle;" th:text="${competition.views}">200</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="five wide column right aligned">
+                                        <a href="#" class="ui teal basic label m-padded-mini m-text-thin" th:text="${competition.type.name}">公益活动</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="five wide column">
+                                <a href="#" th:href="@{/competition/{id}(id=${competition.id})}">
+                                    <img src="http://cdn1.52jingsai.com/portal/202012/29/171742imrdr6crj4pmrjbc.jpg" class="ui rounded image" th:src="@{${competition.firstPicture}}" >
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部 -->
+                <div class="ui bottom attached segment" th:if="${competitions.totalPages}>1">
+                    <div class="ui middle aligned two column grid">
+                        <div class="column">
+                            <a href="#" class="ui mini teal basic button" th:href="@{/(page=${competitions.number}-1)}" th:unless="${competitions.first}">
+                                <span>
+                                    <i class="left chevron icon"></i>
+                                    上一页
+                                </span>
+                            </a>
+                        </div>
+                        <div class="right aligned column">
+                            <a href="#" class="ui mini teal basic button" th:href="@{/(page=${competitions.number}+1)}" th:unless="${competitions.last}">
+                                <span>
+                                    下一页
+                                    <i class="right chevron icon"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 右边的top -->
+            <div class="five wide column">
+                <!-- 热门分类 -->
+                <div class="ui segments">
+                    <div class="ui secondary segment">
+                        <div class="ui two column grid">
+                            <div class="column">
+                                <h5><i class="th large icon"></i>热门分类</h5>
+                            </div>
+                            <div class="right aligned column">
+                                <a href="types.html" th:href="@{/types}">more <i class="angle double right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui teal segment">
+                        <div class="ui fluid vertical menu">
+                            <a href="#" class="item" th:each="hotType:${hotTypes}" th:href="@{/search/{typename}(typename=${hotType.name})}">
+                                <span th:text="${hotType.name}">电子竞技</span>
+                                <div class="ui teal basic left pointing label" th:text="${#arrays.length(hotType.competitions)}">10</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 热门比赛比赛 -->
+                <div class="ui segments">
+                    <div class="ui secondary segment">
+                        <div class="ui two column grid">
+                            <div class="column">
+                                <h5><i class="th large icon"></i>热门比赛</h5>
+                            </div>
+                            <div class="right aligned column">
+                                <a href="#" th:href="@{/types}">more <i class="angle double right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui teal segment">
+                        <div class="ui fluid vertical menu">
+                            <a href="#" class="item" th:each="hotCompetition:${hotCompetitions}" th:href="@{/competition/{id}(id=${hotCompetition.id})}">
+                                <span th:text="${hotCompetition.title}">联合国粮农组织驻华代表处招聘志愿者</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合作单位 -->
+                <div class="ui segments">
+                    <div class="ui secondary segment">
+                        <div class="column">
+                            <h5><i class="th large icon"></i>合作单位</h5>
+                        </div>
+                    </div>
+                    <div class="ui center aligned segment">
+                        <a href="http://www.ccyl.org.cn/">
+                            <img th:src="@{/images/cooperative/tuanzhongyang.jpg}" src="../static/images/cooperative/tuanzhongyang.jpg" alt="logo">
+                        </a>
+                        <a href="https://www.ndrc.gov.cn/">
+                            <img th:src="@{/images/cooperative/fagaiwei.jpg}" src="../static/images/cooperative/fagaiwei.jpg" alt="logo">
+                        </a>
+                        <a href="https://www.mee.gov.cn/">
+                            <img th:src="@{/images/cooperative/huanjingbu.jpg}" src="../static/images/cooperative/huanjingbu.jpg" alt="logo">
+                        </a>
+                        <a href="https://www.aliyun.com/">
+                            <img th:src="@{/images/cooperative/aliyun.jpg}" src="../static/images/cooperative/aliyun.jpg" alt="logo">
+                        </a>
+                        <a href="https://www.baidu.com/">
+                            <img th:src="@{/images/cooperative/baidu.jpg}" src="../static/images/cooperative/baidu.jpg" alt="logo">
+                        </a>
+                        <a href="https://www.sina.com.cn/">
+                            <img th:src="@{/images/cooperative/xinlang.jpg}" src="../static/images/cooperative/xinlang.jpg" alt="logo">
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 发布比赛 -->
+                <div class="ui centered card" style="width: 40em;">
+                    <a class="ui button disabled red" th:href="@{/competition/input}">发布比赛</a>
+                </div>
+
+                <!-- 关注我们 -->
+                <h4 class="ui horizontal divider header">关注我们</h4>
+                <img th:src="@{/images/material/QR.jpg}" src="../static/images/material/QR.jpg" class="ui rounded image centered" alt="" style="width: 8em;">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+<!-- 底部 -->
+<footer th:replace="_fragment :: footer"  class="ui inverted vertical segment m-padded-tb-large-half"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    /* 通过按钮中的class值定位到按钮 */
+    $('.menu.toggle').click(function () {
+        /* 点击去除m-mobile-hide样式 */
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    /*个人中心和注销*/
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+</script>
+</body>
+</html>

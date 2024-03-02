@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragment_admin :: head(~{::title})">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>分类管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/my.css}" href="../../static/css/my.css"/>
+    <link rel="icon" href="../../static/images/material/favicon.ico" th:href="@{/images/material/favicon.ico}">
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="admin/_fragment_admin :: menu(3)" class="ui segment m-padded-tb-mini"></nav>
+
+<div class="ui attached pointing menu">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="types-input.html" th:href="@{/admin/types/input}" class="item">新增</a>
+            <a href="types.html" th:href="@{/admin/types}" class="item active teal">列表</a>
+        </div>
+    </div>
+</div>
+
+<!-- 中间内容 -->
+<div class=" m-container m-padded-tb-large">
+    <div class="ui container">
+        <!--消息提示-->
+        <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+            <i class="close icon"></i>
+            <div class="header">提示：</div>
+            <p th:text="${message}">操作成功与否</p>
+        </div>
+
+        <table class="ui table">
+            <thead>
+            <tr>
+                <th style="text-align: center">ID</th>
+                <th style="text-align: center">名称</th>
+                <th style="text-align: center">操作</th>
+            </tr>
+            </thead>
+            <tobody>
+                <tr th:each="type,iterStat : ${types.content}">
+                    <td style="text-align: center" th:text="${iterStat.count}">1</td>
+                    <td style="text-align: center" th:text="${type.name}">公益活动</td>
+                    <td style="text-align: center">
+                        <a href="#" th:href="@{/admin/types/{id}/input(id=${type.id})}" class="ui mini basic teal button">编辑</a>
+                        <a href="#" class="ui mini basic red button">删除</a>
+                    </td>
+                    <div class="ui mini modal">
+                        <i class="close icon"></i>
+                        <div class="header">
+                            删除分类
+                        </div>
+                        <div class="content">
+                            <div class="description">
+                                <div class="ui header">删除后不可恢复</div>
+                                <p>分类下的竞赛将被删除</p>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <div class="ui red deny button">
+                                否
+                            </div>
+                            <div class="ui positive right labeled icon button">
+                                <a href="#" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="m-white button">是</a>
+                                <i class="checkmark icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+            </tobody>
+            <tfoot>
+            <tr>
+                <th colspan="6">
+                    <div class="ui left floated pagination menu" th:if="${types.totalPages}>1">
+                        <a th:href="@{/admin/types(page=${types.number}-1)}" class="item icon" th:unless="${types.first}">
+                            <span>
+                                <i class="left chevron icon"></i>
+                                上一页
+                            </span>
+                        </a>
+                        <a th:href="@{/admin/types(page=${types.number}+1)}" class="item icon" th:unless="${types.last}">
+                            <span>
+                                下一页
+                                <i class="right chevron icon"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <a href="#" th:href="@{/admin/types/input}" class="ui right floated teal basic button">新增</a>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<br>
+<br>
+
+<!-- 底部 -->
+<footer th:replace="admin/_fragment_admin :: footer" class="ui inverted vertical segment m-padded-tb-large-half"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    /* 通过按钮中的class值定位到按钮 */
+    $('.menu.toggle').click(function () {
+        /* 点击去除m-mobile-hide样式 */
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    $('.mini.red.button').click(function () {
+        $('.ui.mini.modal').modal('show');
+    });
+
+    /*消息提示关闭*/
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+            .closest('.message')
+            .transition('fade');
+        });
+</script>
+</body>
+</html>

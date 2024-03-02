@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: head(~{::title})">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>404</title>
+    <link rel="icon" href="../../static/images/material/favicon.ico" th:href="@{/images/favicon.ico}">
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragment :: menu(null)" class="ui inverted segment m-padded-tb-mini"></nav>
+
+<br/>
+<br/>
+<br/>
+
+<div class="m-container m-padded-tb-massive">
+    <div class="ui error message">
+        <div class="ui contianer">
+            <h2>404</h2>
+            <p>对不起，你访问的资源不存在</p>
+        </div>
+    </div>
+</div>
+
+<br/>
+<br/>
+<br/>
+
+<!-- 底部 -->
+<footer class="ui inverted vertical segment m-padded-tb-large-half">
+    <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <h4 class="ui inverted header m-text-thin m-text-spaced">关注公众号</h4>
+                    <img th:src="@{/images/material/ER.jpg}" src="../../static/images/material/ER.png" class="ui rounded image centered" alt="" style="width: 8em;">
+                </div>
+            </div>
+            <div class="two wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced">友情链接</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item"><p>GitHub</p></a>
+                    <a href="#" class="item"><p>哔哩哔哩</p></a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced">联系我们</h4>
+                <div class="ui inverted link list">
+                    <a href="mailto:chenaichenet@yeah.net" class="item"><p>Email : chenaichenet@yeah.net</p></a>
+                    <a href="#" class="item"><p>QQ : 1950679747</p></a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced">关于</h4>
+                <p class="m-text-thin m-text-spaced m-opaciby-mini">
+                    大学生竞赛网
+                    <br>
+                    <br>
+                    大学生竞赛网，于2021年3月正式上线，网站创立以来一直以服务于全国大学生、社会赛事爱好者为己任，每天分享各类比赛信息、志愿者信息。
+                </p>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny"><i class="copyright outline icon"></i> 2020 - 2021
+            Competition Website
+            by ChenetChen</p>
+    </div>
+</footer>
+</body>
+</html>

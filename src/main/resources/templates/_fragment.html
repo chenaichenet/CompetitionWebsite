@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title th:replace="${title}">头文件集合</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <!--自定义CSS-->
+    <link rel="stylesheet" th:href="@{/css/my.css}" href="../static/css/my.css"/>
+    <!-- 文本格式 -->
+    <link rel="stylesheet" th:href="@{/css/typo.css}" href="../static/css/typo.css">
+    <!-- 目录生成 -->
+    <link rel="stylesheet" th:href="@{/lib/tocbot/tocbot.css}" href="../static/lib/tocbot/tocbot.css">
+    <!--markdown插件-->
+    <link rel="stylesheet" th:href="@{/lib/editormd/css/editormd.min.css}" href="../static/lib/editormd/css/editormd.min.css">
+    <!--图标-->
+    <link rel="icon" href="../static/images/material/favicon.ico" th:href="@{/images/material/favicon.ico}">
+</head>
+<body>
+
+<!--导航-->
+<nav th:fragment="menu(n)" class="ui segment m-padded-tb-mini">
+    <div class="ui container">
+        <div class="ui secondary stackable menu">
+            <h1 class="ui header item"><a href="index.html" th:href="@{/index}" class="m-black" th:text="#{index.title}">大学生竞赛网</a></h1>
+            <a href="index.html" th:href="@{/index}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="home icon"></i>首页</a>
+            <div class="ui m-item simple dropdown item m-mobile-hide">
+                <a href="types.html" th:href="@{/types}" class="m-item m-black m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="idea icon"></i>比赛</a>
+                <div class="menu stackable">
+                    <div class="item" th:each="type:${types}"><a href="#" th:href="@{/search/{typename}(typename=${type.name})}" class="m-item m-black m-mobile-hide"><span th:text="${type.name}"></span></a></div>
+                </div>
+            </div>
+            <a href="archives.html" th:href="@{/archives}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="archive icon"></i>归档</a>
+            <a href="about.html" th:href="@{/about}" class="m-item item m-mobile-hide" th:classappend="${n==4} ? 'active'"><i class="info icon"></i>关于</a>
+            <!--搜索栏-->
+            <div class="m-item right item m-mobile-hide">
+                <form name="search" action="#" th:action="@{/search}" method="post" >
+                    <div class="ui icon  input">
+                        <input type="text" name="query" placeholder="Search..." th:value="${query}">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+                </form>
+            </div>
+            <!--登录注册-->
+            <div id="loginAndReg" class="ui secondary stackable menu" th:if="${session.user} == null">
+                <a href="login.html" th:href="@{/toLogin}" class="m-item item m-mobile-hide m-black">登录</a>
+                <a href="registered.html" th:href="@{/toRegistered}" class="m-item item m-mobile-hide m-black">注册</a>
+            </div>
+            <!--用户头像和用户名-->
+            <div id="users" class="right menu m-item m-mobile-hide" th:if="${session.user} != null">
+                <div class="ui dropdown item">
+                    <div class="text" th:replace="_fragment :: avatar(${session.user.avatar},~{},~{::#uname})">
+                        <img src="../static/images/me.jpg" class="ui avatar image">
+                        <span id="uname" th:text="${session.user.username}">陈十七</span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="userInfo.html" th:href="@{/user/userInfo(userId=${session.user.id})}" class="item">个人中心</a>
+                        <a href="#" th:href="@{/logout}" class="item logout">注销</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="menu toggle ui icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+<div th:fragment="i18n" class="ui secondary stackable menu" style="float: right">
+    <a href="#" th:href="@{/index.html(l='zh_CN')}" class="m-item item m-mobile-hide m-black">中文</a>
+    <a href="#" th:href="@{/index.html(l='en_US')}" class="m-item item m-mobile-hide m-black">英文</a>
+</div>
+
+<!--图片-->
+<div class="text item" th:switch="${n}" th:fragment="images(n)">
+    <img class="ui image" src="../static/images/avatar/avatar1.png" th:src="@{/images/avatar/avatar1.png}" th:case="'0'">
+    <img class="ui image" src="../static/images/avatar/avatar2.png" th:src="@{/images/avatar/avatar2.png}" th:case="'1'">
+    <img class="ui image" src="../static/images/avatar/avatar3.png" th:src="@{/images/avatar/avatar3.png}" th:case="'2'">
+    <img class="ui image" src="../static/images/avatar/avatar4.png" th:src="@{/images/avatar/avatar4.png}" th:case="'3'">
+    <img class="ui image" src="../static/images/avatar/avatar5.png" th:src="@{/images/avatar/avatar5.png}" th:case="'4'">
+    <img class="ui image" src="../static/images/avatar/avatar6.png" th:src="@{/images/avatar/avatar6.png}" th:case="'5'">
+    <img class="ui image" src="../static/images/avatar/avatar7.png" th:src="@{/images/avatar/avatar7.png}" th:case="'6'">
+    <img class="ui image" src="../static/images/avatar/avatar8.png" th:src="@{/images/avatar/avatar8.png}" th:case="'7'">
+    <img class="ui image" src="../static/images/avatar/avatar9.png" th:src="@{/images/avatar/avatar9.png}" th:case="'8'">
+    <img class="ui image" src="../static/images/avatar/avatar10.png" th:src="@{/images/avatar/avatar10.png}" th:case="'9'">
+    <img class="ui image" src="../static/images/avatar/avatar11.png" th:src="@{/images/avatar/avatar11.png}" th:case="'10'">
+    <img class="ui image" src="../static/images/avatar/avatar12.png" th:src="@{/images/avatar/avatar12.png}" th:case="'11'">
+    <img class="ui image" src="../static/images/avatar/avatar13.png" th:src="@{/images/avatar/avatar13.png}" th:case="'12'">
+    <img class="ui image" src="../static/images/avatar/avatar14.png" th:src="@{/images/avatar/avatar14.png}" th:case="'13'">
+    <img class="ui image" src="../static/images/avatar/avatar15.png" th:src="@{/images/avatar/avatar15.png}" th:case="'14'">
+    <img class="ui image" src="../static/images/avatar/avatar16.png" th:src="@{/images/avatar/avatar16.png}" th:case="'15'">
+    <img class="ui image" src="../static/images/avatar/avatar17.png" th:src="@{/images/avatar/avatar17.png}" th:case="'16'">
+    <img class="ui image" src="../static/images/avatar/avatar18.png" th:src="@{/images/avatar/avatar18.png}" th:case="'17'">
+    <img class="ui image" src="../static/images/avatar/avatar19.png" th:src="@{/images/avatar/avatar19.png}" th:case="'18'">
+    <img class="ui image" src="../static/images/avatar/avatar20.png" th:src="@{/images/avatar/avatar20.png}" th:case="'19'">
+    <img class="ui image" src="../static/images/avatar/avatar21.png" th:src="@{/images/avatar/avatar21.png}" th:case="'20'">
+    <img class="ui image" src="../static/images/avatar/avatar22.png" th:src="@{/images/avatar/avatar22.png}" th:case="'21'">
+    <img class="ui image" src="../static/images/avatar/avatar23.png" th:src="@{/images/avatar/avatar23.png}" th:case="'22'">
+    <img class="ui image" src="../static/images/avatar/avatar24.png" th:src="@{/images/avatar/avatar24.png}" th:case="'23'">
+    <img class="ui image" src="../static/images/avatar/avatar25.png" th:src="@{/images/avatar/avatar25.png}" th:case="'24'">
+    <img class="ui image" src="../static/images/avatar/avatar26.png" th:src="@{/images/avatar/avatar26.png}" th:case="'25'">
+    <img class="ui image" src="../static/images/avatar/avatar27.png" th:src="@{/images/avatar/avatar27.png}" th:case="'26'">
+    <img class="ui image" src="../static/images/avatar/avatar28.png" th:src="@{/images/avatar/avatar28.png}" th:case="'27'">
+    <img class="ui image" src="../static/images/avatar/avatar29.png" th:src="@{/images/avatar/avatar29.png}" th:case="'28'">
+    <img class="ui image" src="../static/images/avatar/avatar30.png" th:src="@{/images/avatar/avatar30.png}" th:case="'29'">
+</div>1
+<!--头像-->
+<div style="text-align: center" class="text item" th:switch="${n}" th:fragment="avatar(n,content,span)">
+    <img class="ui avatar image" src="../static/images/avatar/avatar1.png" th:src="@{/images/avatar/avatar1.png}" th:case="'0'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar2.png" th:src="@{/images/avatar/avatar2.png}" th:case="'1'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar3.png" th:src="@{/images/avatar/avatar3.png}" th:case="'2'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar4.png" th:src="@{/images/avatar/avatar4.png}" th:case="'3'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar5.png" th:src="@{/images/avatar/avatar5.png}" th:case="'4'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar6.png" th:src="@{/images/avatar/avatar6.png}" th:case="'5'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar7.png" th:src="@{/images/avatar/avatar7.png}" th:case="'6'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar8.png" th:src="@{/images/avatar/avatar8.png}" th:case="'7'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar9.png" th:src="@{/images/avatar/avatar9.png}" th:case="'8'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar10.png" th:src="@{/images/avatar/avatar10.png}" th:case="'9'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar11.png" th:src="@{/images/avatar/avatar11.png}" th:case="'10'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar12.png" th:src="@{/images/avatar/avatar12.png}" th:case="'11'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar13.png" th:src="@{/images/avatar/avatar13.png}" th:case="'12'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar14.png" th:src="@{/images/avatar/avatar14.png}" th:case="'13'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar15.png" th:src="@{/images/avatar/avatar15.png}" th:case="'14'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar16.png" th:src="@{/images/avatar/avatar16.png}" th:case="'15'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar17.png" th:src="@{/images/avatar/avatar17.png}" th:case="'16'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar18.png" th:src="@{/images/avatar/avatar18.png}" th:case="'17'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar19.png" th:src="@{/images/avatar/avatar19.png}" th:case="'18'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar20.png" th:src="@{/images/avatar/avatar20.png}" th:case="'19'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar21.png" th:src="@{/images/avatar/avatar21.png}" th:case="'20'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar22.png" th:src="@{/images/avatar/avatar22.png}" th:case="'21'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar23.png" th:src="@{/images/avatar/avatar23.png}" th:case="'22'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar24.png" th:src="@{/images/avatar/avatar24.png}" th:case="'23'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar25.png" th:src="@{/images/avatar/avatar25.png}" th:case="'24'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar26.png" th:src="@{/images/avatar/avatar26.png}" th:case="'25'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar27.png" th:src="@{/images/avatar/avatar27.png}" th:case="'26'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar28.png" th:src="@{/images/avatar/avatar28.png}" th:case="'27'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar29.png" th:src="@{/images/avatar/avatar29.png}" th:case="'28'">
+    <img class="ui avatar image" src="../static/images/avatar/avatar30.png" th:src="@{/images/avatar/avatar30.png}" th:case="'29'">
+
+    <div class="content" th:replace="${content}"></div>
+
+    <span th:replace="${span}"></span>
+</div>
+
+
+<!--底部-->
+<footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-large-half">
+    <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <h4 class="ui inverted header m-text-thin m-text-spaced">关注公众号</h4>
+                    <img th:src="@{/images/material/QR.jpg}" src="../static/images/material/QR.jpg" class="ui rounded image centered" alt="" style="width: 8em;">
+                </div>
+
+            </div>
+            <div class="two wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced">友情链接</h4>
+                <div class="ui inverted link list">
+                    <a href="https://github.com/" class="item">GitHub</a>
+                    <a href="https://www.csdn.net/" class="item">CSDN</a>
+                    <a href="https://www.bilibili.com/" class="item">bilibili</a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced">联系我们</h4>
+                <div class="ui inverted link list">
+                    <a href="mailto:chenaichenet@yeah.net" class="item"><p>Email : chenaichenet@yeah.net</p></a>
+                    <a href="#" class="item"><p>QQ : 1950679747</p></a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced">关于</h4>
+                <p class="m-text-thin m-text-spaced m-opaciby-mini">
+                    大学生竞赛网
+                    <br>
+                    <br>
+                    大学生竞赛网，于2021年3月正式上线，网站创立以来一直以服务于全国大学生、社会赛事爱好者为己任，每天分享各类比赛信息、志愿者信息。
+                </p>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <div class="ui very relaxed horizontal list">
+            <a class="item m-grey" style="color: gray" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502030143" rel="noreferrer" target="_blank">公安备案号11010502030143</a>
+            <a class="item m-grey" style="color: gray" href="http://beian.miit.gov.cn/publish/query/indexFirst.action" rel="noreferrer" target="_blank">京ICP备19004658号</a>
+            <a class="item m-grey" style="color: gray" href="https://csdnimg.cn/release/live_fe/culture_license.png" rel="noreferrer" target="_blank">京网文〔2020〕1039-165号</a>
+            <a class="item m-grey" style="color: gray" href="https://csdnimg.cn/cdn/content-toolbar/csdn-ICP.png" target="_blank">经营性网站备案信息</a>
+            <a class="item m-grey" style="color: gray" href="http://www.bjjubao.org/" target="_blank">北京互联网违法和不良信息举报中心</a>
+            <a class="item m-grey" style="color: gray" href="http://www.cyberpolice.cn/" target="_blank">网络110报警服务</a>
+            <a class="item m-grey" style="color: gray" href="http://www.12377.cn/" target="_blank">中国互联网举报中心</a>
+            <a class="item m-grey" style="color: gray" href="https://download.csdn.net/index.php/tutelage/" target="_blank">家长监护</a>
+            <a class="item m-grey" style="color: gray" href="https://chrome.google.com/webstore/detail/csdn%E5%BC%80%E5%8F%91%E8%80%85%E5%8A%A9%E6%89%8B/kfkdboecolemdjodhmhmcibjocfopejo?hl=zh-CN" target="_blank">Chrome商店下载</a>
+            <a class="item m-grey" style="color: gray" href="https://www.csdn.net/company/index.html#statement" target="_blank">版权与免责声明</a>
+            <a class="item m-grey" style="color: gray" href="https://blog.csdn.net/blogdevteam/article/details/90369522" target="_blank">版权申诉</a>
+        </div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">
+            <i class="copyright outline icon"></i>
+            2020 - 2021 Competition Website by
+            <a href="chenet.html" th:href="@{/chenet}" class="m-white">ChenetChen</a>
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>

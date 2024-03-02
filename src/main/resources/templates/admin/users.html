@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragment_admin :: head(~{::title})">
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0" name="viewport">
+    <title>用户管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+    <link href="../../static/css/my.css" rel="stylesheet" th:href="@{/css/my.css}"/>
+    <link href="../../static/images/material/favicon.ico" rel="icon" th:href="@{/images/material/favicon.ico}"
+          type="image/x-icon">
+</head>
+<body>
+<!-- 导航 -->
+<nav class="ui segment m-padded-tb-mini" th:replace="admin/_fragment_admin :: menu(4)"></nav>
+
+<!-- 中间内容 -->
+<div class=" m-container m-padded-tb-large">
+    <div class="ui container">
+        <!--表格-->
+        <div id="table-container">
+            <table class="ui teal compact table" th:fragment="userList">
+                <thead>
+                <tr>
+                    <th style="text-align: center">序号</th>
+                    <th style="text-align: center">用户名</th>
+                    <th style="text-align: center">角色</th>
+                    <th style="text-align: center">创建时间</th>
+                    <th style="text-align: center">发布比赛</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user,iterStat:${userList}">
+                    <!--iterStat为状态变量，默认为元素变量后加Stat-->
+                    <td style="text-align: center" th:text="${iterStat.count}">1</td>
+                    <td style="text-align: center" th:text="${user.username}">陈十七</td>
+                    <td style="text-align: center" th:text="${user.role}==0?'普通用户':(${user.role==1?'管理员':'系统管理员'})">系统管理员</td>
+                    <td style="text-align: center" th:text="${#dates.format(user.createTime,'yyyy-MM-dd')}">2021-5-3
+                    </td>
+                    <td style="text-align: center" th:text="${#arrays.length(user.competitions)}+' 篇'">2</td>
+                    <td style="text-align: center">
+                        <button class="ui mini basic red button">删除</button>
+                    </td>
+
+                    <div class="ui mini modal">
+                        <i class="close icon"></i>
+                        <div class="header">
+                            删除账户
+                        </div>
+                        <div class="content">
+                            <div class="description">
+                                <div class="ui header">删除后不可恢复</div>
+                                <p>账户发布的竞赛将会被删除。</p>
+                                <p>账户报名的竞赛将会取消。</p>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <div class="ui red deny button">
+                                否
+                            </div>
+                            <div class="ui positive right labeled icon button">
+                                <a class="m-white button" href="#"
+                                   th:href="@{/admin/user/{id}/delete(id=${user.id})}">是</a>
+                                <i class="checkmark icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="7">
+                        <div class="ui left floated pagination menu" th:if="${userList.totalElements}>1">
+                            <a class="item icon" onclick="page(this)" th:attr="data-page=${userList.number}-1" th:unless="${userList.first}">
+                                <span><i class="left chevron icon"></i>上一页</span>
+                            </a>
+                            <a class="item icon" onclick="page(this)" th:attr="data-page=${userList.number}+1" th:unless="${userList.last}">
+                                <span>下一页<i class="right chevron icon"></i></span>
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+
+            <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                <i class="close icon"></i>
+                <div class="header">提示：</div>
+                <p th:text="${message}">操作提示</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br>
+<br>
+
+<!-- 底部 -->
+<footer class="ui inverted vertical segment m-padded-tb-large-half"
+        th:replace="admin/_fragment_admin :: footer"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    /* 通过按钮中的class值定位到按钮 */
+    $('.menu.toggle').click(function () {
+        /* 点击去除m-mobile-hide样式 */
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    $('.message .close').on('click', function () {
+        $(this).closest('.message').transition('fade');
+    });
+
+    $('.mini.red.button').click(function () {
+        $('.ui.mini.modal').modal('show');
+    });
+
+    function page(obj) {
+        $("[name='page']").val($(obj).data("page"));    //赋值
+        loaddate();
+    }
+
+    function loaddate() {
+        $('#table-container').load("/admin/users/search",{
+            page:$("[name='page']").val()
+        });
+    }
+
+</script>
+</body>
+</html>

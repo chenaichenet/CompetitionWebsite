@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment::head(~{::title})">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>发布比赛</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/my.css}" href="../static/css/my.css"/>
+    <link rel="stylesheet" th:href="@{/lib/editormd/css/editormd.min.css}" href="../static/lib/editormd/css/editormd.min.css">
+    <link rel="icon" href="../static/images/material/favicon.ico" th:href="@{/images/material/favicon.ico}">
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragment :: menu(null)" class="ui segment m-padded-tb-mini"></nav>
+
+<!-- 中间内容 -->
+<div class=" m-padded-tb-large">
+    <div class="ui container">
+        <form id="competition-form" action="#" th:action="@{/competition/input}" th:object="${competition}" method="post" class="ui form">
+            <input type="hidden" name="published">
+            <input type="hidden" name="id" th:value="*{id}">
+            <div class="required field">
+                <div class="ui left labeled input">
+                    <input type="text" name="title" placeholder="标题" th:value="*{title}">
+                </div>
+            </div>
+            <div class="required field">
+                <div id="md-content" style="z-index: 1 !important;">
+                    <textarea placeholder="比赛内容" name="content" style="display: none;" th:text="*{content}"></textarea>
+                </div>
+            </div>
+
+            <div class="required field">
+                <div class="ui left labeled action input">
+                    <label class="ui compact teal basic label">分类</label>
+                    <div class="ui fluid selection dropdown">
+                        <input type="hidden" name="type.id" th:value="*{type}!=null ? *{type.id}">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">分类</div>
+                        <div class="menu">
+                            <div class="item" data-value="1" th:each="type:${types}" th:data-value="${type.id}" th:text="${type.name}" >错误日志</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="required field">
+                <div class="ui left labeled input">
+                    <label  class="ui teal basic label">首图</label>
+                    <input type="text" name="firstPicture" th:value="*{firstPicture}" placeholder="首图引用地址">
+                </div>
+            </div>
+
+            <div class="required field">
+                <textarea name="description" th:text="*{description}" placeholder="比赛描述" maxlength="200"></textarea>
+            </div>
+
+            <div class="ui checkbox">
+                <input type="checkbox" id="protocol" name="protocol" class="hidden">
+                <label for="protocol">我已同意<a href="#">《大学生竞赛网发布比赛规范》</a></label>
+            </div>
+
+            <div class="ui error message"></div>
+
+            <div class="ui right aligned container">
+                <button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+                <button id="submit" type="button" class="ui teal button">发布</button>
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<br>
+
+<!-- 底部 -->
+<footer th:replace="_fragment :: footer"  class="ui inverted vertical segment m-padded-tb-large-half"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script th:src="@{/lib/editormd/editormd.min.js}" src="../static/lib/editormd/editormd.min.js"></script>
+<script>
+    /* editormd初始化 */
+    var contextEditor;
+    $(function () {
+        contentEditor = editormd("md-content", {
+            width: "100%",
+            height: 640,
+            syncScrolling: "single",
+            path: "/lib/editormd/lib/"
+        });
+    });
+
+    /* 通过按钮中的class值定位到按钮 */
+    $('.menu.toggle').click(function () {
+        /* 点击去除m-mobile-hide样式 */
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    $('#submit').click(function () {
+        $('#competition-form').submit();
+    });
+
+    $('.ui.form').form({
+        fields: {
+            title: {
+                identifier: 'title',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入比赛标题'
+                }]
+            },
+            content: {
+                identifier: 'content',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入比赛详情内容'
+                }]
+            },
+            typeId: {
+                identifier: 'typeId',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入比赛分类'
+                }]
+            },
+            firstPicture: {
+                identifier: 'firstPicture',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入比赛图片'
+                }]
+            },
+            description: {
+                identifier: 'description',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入比赛描述'
+                }]
+            },
+            protocol: {
+                identifier: 'protocol',
+                rules: [{
+                    type: 'checked',
+                    prompt: '请勾选相关协议'
+                }]
+            }
+        }
+    });
+</script>
+</body>
+</html>

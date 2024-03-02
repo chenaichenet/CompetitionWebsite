@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment::head(~{::title})">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>用户详情</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/my.css}" href="../static/css/my.css"/>
+    <link rel="icon" href="../static/images/material/favicon.ico" th:href="@{/images/material/favicon.ico}">
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragment :: menu(null)" class="ui segment m-padded-tb-mini"></nav>
+
+<!-- 中间内容 -->
+<div class=" m-container m-padded-tb-large">
+    <div class="ui container">
+        <div class="ui stackable grid">
+            <div class="five wide column">
+                <div class="ui card">
+                    <div class="image">
+                        <img src="../static/images/me.jpg" th:src="@{/images/me.jpg}">
+                    </div>
+                    <div class="content">
+                        <span class="header">陈十七</span>
+                        <div class="meta">
+                            <span class="date">2021</span>年加入
+                            <div style="float: right"><i class="china flag"></i></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="eleven wide column">
+                <div class="ui top attached segment">
+                    <div class="ui header"><p>陈十七</p></div>
+                </div>
+                <div class="ui attached segment">
+                    <p>现居长沙</p>
+                    <p>21届湖南农业大学计算机专业学生</p>
+                    <p>为人乐观向上，热爱学习，兴趣爱好广泛，喜欢阅读、思考。</p>
+                </div>
+                <div class="ui attached segment">
+                    <div class="ui orange basic label">编程</div>
+                    <div class="ui orange basic label">写作</div>
+                    <div class="ui orange basic label">运动</div>
+                </div>
+                <div class="ui attached segment">
+                    <div class="ui teal basic label">Java</div>
+                    <div class="ui teal basic label">Python</div>
+                    <div class="ui teal basic label">C++</div>
+                </div>
+                <div class="ui bottom attached segment">
+                    <a href="https://github.com/chenaichenet" class="ui circular icon button"><i class="github icon"></i></a>
+                    <a href="#" class="ui wechat circular icon button"><i class="weixin icon"></i></a>
+                    <a href="#" class="ui qq circular icon button" data-content="1950679747" data-position="bottom center"><i class="qq icon"></i></a>
+                </div>
+                <div class="ui wechat-QR flowing popup transit hidden">
+                    <img th:src="@{/images/material/ER.png}" src="../static/images/material/ER.png" alt="" class="ui rounded image" style="width: 100px;">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+<!-- 底部 -->
+<footer th:replace="_fragment :: footer"  class="ui inverted vertical segment m-padded-tb-large-half"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    /* 通过按钮中的class值定位到按钮 */
+    $('.menu.toggle').click(function () {
+        /* 点击去除m-mobile-hide样式 */
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    $('.wechat').popup({
+        popup: $('.wechat-QR'),
+        position: 'bottom center'
+    });
+
+    $('.qq').popup();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment::head(~{::title})">
+    <meta charset="UTF-8">
+    <title>报名</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/my.css}" href="../static/css/my.css"/>
+    <link rel="icon" href="../static/images/material/favicon.ico" th:href="@{/images/material/favicon.ico}">
+</head>
+
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragment::menu(null)"></nav>
+
+<!-- 中间内容 -->
+<div class="m-container m-padded-tb-large">
+    <div class="ui container">
+        <div class="column">
+            <div class="attached segment">
+                <form id="enroll_form" class="ui enroll segment form" th:action="@{/user/enrollCompetition}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="competition.id" th:value="${competitionId}">
+                    <input type="hidden" name="user.id" th:value="${session.user.id}">
+                    <h3 class="ui dividing header" style="text-align: center">竞 赛 报 名 表</h3>
+                    <h4 class="ui dividing header">基本信息</h4>
+                    <div class="field">
+                        <div class="two fields">
+                            <div class="field">
+                                <div class="ui labeled input">
+                                    <div class="ui label" style="text-align: center;width: 80px">姓名</div>
+                                    <input name="name" type="text" th:value="${information.name}" placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui labeled input">
+                                    <div class="ui label" style="text-align: center;width: 80px">性别</div>
+                                    <select name="gender" class="ui fluid dropdown" th:value="${information.gender}">
+                                        <option value="男">男</option>
+                                        <option value="女">女</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui labeled input">
+                                <div class="ui label" style="text-align: center;width: 80px">身份证</div>
+                                <input name="idCard" type="text" th:value="${information.idCard}" placeholder="Id Card">
+                            </div>
+                        </div>
+                        <div class="two fields">
+                            <div class="field">
+                                <div class="ui labeled input">
+                                    <div class="ui label" style="text-align: center;width: 80px">手机</div>
+                                    <input name="phone" type="tel" th:value="${information.phone}" placeholder="Phone Number">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui labeled input">
+                                    <div class="ui label" style="text-align: center;width: 80px">邮箱</div>
+                                    <input name="email" type="email" th:value="${information.email}" placeholder="Email">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="ui dividing header">学籍信息</h4>
+                    <div class="field">
+                        <div class="ui labeled input">
+                            <div class="ui label" style="text-align: center;width: 80px">学校</div>
+                            <select name="school" class="ui fluid dropdown" th:value="${information.school}">
+                                <option value="北京大学">北京大学</option>
+                                <option value="中国人民大学">中国人民大学</option>
+                                <option value="清华大学">清华大学</option>
+                                <option value="武汉大学">武汉大学</option>
+                                <option value="中南大学">中南大学</option>
+                                <option value="湖南大学">湖南大学</option>
+                                <option value="长沙理工大学">长沙理工大学</option>
+                                <option value="湖南工业大学">湖南工业大学</option>
+                                <option value="湖南农业大学">湖南农业大学</option>
+                                <option value="深圳大学">深圳大学</option>
+                                <option value="海南大学">海南大学</option>
+                                <option value="台湾大学">台湾大学</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="two fields">
+                            <div class="field">
+                                <div class="ui labeled input">
+                                    <div class="ui label" style="text-align: center;width: 80px">学号</div>
+                                    <input name="student_id" type="text" th:text="${information.student_id}" placeholder="Student Id">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui labeled input">
+                                    <div class="ui label" style="text-align: center;width: 80px">导师</div>
+                                    <input name="teacher" type="text" th:value="${information.teacher}" placeholder="Tutor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="ui dividing header">报名信息</h4>
+                    <div class="field">
+                        <div class="fields">
+                            <div class="field">
+                                <div class="ui labeled input">
+                                    <div class="ui label" style="text-align: center;width: 80px">参赛类型</div>
+                                    <select id="entryType" class="ui search dropdown" onchange="showMember()">
+                                        <option value="single">个人参赛</option>
+                                        <option value="team">组队参赛</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="eleven wide field">
+                                <div class="ui labeled input">
+                                    <div class="ui label" style="text-align: center;width: 80px">作品名称</div>
+                                    <input name="title" type="text" th:value="${information.title}" placeholder="Title">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="teamMember" style="display: none">
+                        <div style="text-align: right">
+                            <div class="ui button" onclick="delMember()">删除成员</div>
+                            <div class="ui button" onclick="addMember()">新增成员</div>
+                        </div>
+                        <div id="member" class="field">
+                            <div class="two fields">
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui label" style="text-align: center;width: 80px">队员姓名</div>
+                                        <input name="name" type="text" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui labeled input">
+                                            <div class="ui label" style="text-align: center;width: 80px">身份证</div>
+                                            <input name="idCard" type="text" placeholder="Id Card">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field">
+                            <div class="ui labeled input">
+                                <div class="ui label" style="text-align: center;width: 80px">作品简介</div>
+                                <textarea name="content" type="text" th:value="${information.content}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="ui dividing header">相关文件</h4>
+                    <div class="field">
+                        <div class="ui action input">
+                            <input name="filePath" type="file">
+                            <button class="ui button">上传</button>
+                        </div>
+                    </div>
+
+                    <div class="ui error message"></div>
+                    <div class="ui checkbox" style="text-align: center">
+                        <input type="checkbox" id="protocol" name="protocol" class="hidden">
+                        <label for="protocol">我已同意<a href="#">《大学生竞赛网报名比赛规范》</a><a href="#">《大学生竞赛网隐私保护声明》</a></label>
+                    </div>
+                    <h4 class="ui dividing header"></h4>
+
+                    <div id="shutdown" class="ui button red" onclick="window.history.go(-1)">返回</div>
+                    <div id="publish-btn" class="ui button teal" style="float: right" type="submit">提交</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 弹出提示 -->
+<div class="ui message modal">
+    <div class="ui icon header segment">
+        <i class="check icon"></i><span>报名成功</span>
+    </div>
+</div>
+<br>
+<br>
+
+<footer th:replace="_fragment::footer"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    /* 通过按钮中的class值定位到按钮 */
+    $('.menu.toggle').click(function () {
+        /* 点击去除m-mobile-hide样式 */
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    $('#publish-btn').click(function () {
+        $('#enroll_form').submit();
+    })
+
+    /* 报名表单验证 */
+    $(".ui.enroll.form").form({
+        fields: {
+            name: {
+                identifier: "name",
+                rules: [{type: "empty", prompt: "姓名不能为空"}]
+            },
+            idCard: {
+                identifier: "idCard",
+                rules: [
+                    {type: "empty", prompt: "身份证不能为空"},
+                    {type: "exactLength[18]", prompt: "请输入正确的身份证"}
+                ]
+            },
+            phone: {
+                identifier: "phone",
+                rules: [
+                    {type: 'number', prompt: "请输入正确的手机号"},
+                    {type: 'exactLength[11]', prompt: "请输入正确的手机号"}
+                ]
+            },
+            email: {
+                identifier: "email",
+                rules: [{type: 'email', prompt: "请输入正确的邮箱"}]
+            },
+            postal: {
+                identifier: "postal",
+                rules: [{type: "empty", prompt: "请输入学校邮编"}]
+            },
+            studentId: {
+                identifier: 'studentId',
+                rules: [{type: "empty", prompt: "请输入学号，确保和学信网一致"}]
+            },
+            title: {
+                identifier: 'title',
+                rules: [{type: "empty", prompt: "请输入参赛作品名称"}]
+            },
+            protocol: {
+                identifier: 'protocol',
+                rules: [{type: 'checked', prompt: '请勾选相关协议'}]
+            }
+        }
+    });
+
+    /*控制组队和个人参赛的页面*/
+    function showMember(){
+        if (document.getElementById("entryType").value === "single"){
+            document.getElementById("teamMember").style.display="none";
+        }else {
+            document.getElementById("teamMember").style.display="";
+        }
+    }
+
+    /*新增队员和删除队员*/
+    var new_div = 1;
+    function addMember(){
+        var e = document.getElementById("member");
+        var div = document.createElement("div");
+        div.className = "field";
+        div.id = "member" + new_div;
+        div.innerHTML = e.innerHTML;
+        document.getElementById("teamMember").appendChild(div);
+        new_div++;
+    }
+
+    function delMember() {
+        var id = "member" + new_div;
+        var div = document.getElementById(id);
+        document.getElementById("teamMember").removeChild(div);
+        new_div--;
+    }
+</script>
+</body>
+</html>

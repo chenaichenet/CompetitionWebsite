@@ -1,0 +1,56 @@
+server:
+  port: 8001
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/competition_web?useUnicode=true&serverTimezone=UTC
+    username: root
+    password: 123456
+#    druid:
+#      test-while-idle: false
+#      validation-query: SELECT 1
+  thymeleaf:
+    mode: HTML
+    cache: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  #    database-platform: org.hibernate.dialect.MySQL5Dialect #设置方言
+
+  #邮件服务
+  mail:
+    host: smtp.yeah.net
+    username: xxxx
+    password: xxxxx
+    protocol: SMTP
+    templatePath: templates/mailTemplate.html #自定义邮件模板路径
+#    from: chenaichenet@yeah.net
+#    smtp:
+#      auth: true
+
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0 #Redis数据库索引（默认为0）
+    jedis:
+      pool:
+        max-active: 50 #连接池最大连接数（使用负值表示没有限制）
+        max-wait: 3000 #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 20 #连接池中的最大空闲连接
+        min-idle: 2 #连接池中的最小空闲连接
+    timeout: 5000 #连接超时时间（毫秒）
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+
+
+logging:
+  level:
+    root: info
+    com.hunau.competition: debug
+  file:
+    name: log/competition-dev.log

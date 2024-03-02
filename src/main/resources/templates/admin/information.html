@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragment_admin :: head(~{::title})">
+    <meta charset="utf-8">
+    <meta name="referrer" content="no-referrer">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" >
+    <title>参赛信息</title>
+    <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+    <link href="../../static/css/my.css" rel="stylesheet" th:href="@{/css/my.css}"/>
+    <link href="../../static/images/material/favicon.ico" rel="icon" th:href="@{/images/material/favicon.ico}"
+          type="image/x-icon">
+</head>
+<body>
+<!-- 导航 -->
+<nav class="ui segment m-padded-tb-mini" th:replace="admin/_fragment_admin :: menu(1)"></nav>
+
+<!-- 中间内容 -->
+<div class=" m-container m-padded-tb-large">
+    <div class="ui container">
+        <form id="enroll_form" class="ui enroll segment form" method="post">
+            <h3 class="ui dividing header" style="text-align: center">竞 赛 报 名 表</h3>
+            <h4 class="ui dividing header">基本信息</h4>
+            <div class="field">
+                <div class="two fields">
+                    <div class="field">
+                        <div class="ui labeled input">
+                            <div class="ui label" style="text-align: center;width: 80px">姓名</div>
+                            <input name="name" type="text" th:value="${information.name}" placeholder="Name" onfocus="this.blur()">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui labeled input">
+                            <div class="ui label" style="text-align: center;width: 80px">性别</div>
+                            <input name="gender" type="text" th:value="${information.gender}" placeholder="Gender" onfocus="this.blur()">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui labeled input">
+                        <div class="ui label" style="text-align: center;width: 80px">身份证</div>
+                        <input name="idCard" type="text" th:value="${information.idCard}" placeholder="Id Card" onfocus="this.blur()">
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <div class="ui labeled input">
+                            <div class="ui label" style="text-align: center;width: 80px">手机</div>
+                            <input name="phone" type="tel" th:value="${information.phone}" placeholder="Phone Number" onfocus="this.blur()">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui labeled input">
+                            <div class="ui label" style="text-align: center;width: 80px">邮箱</div>
+                            <input name="email" type="email" th:value="${information.email}" placeholder="Email" onfocus="this.blur()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="ui dividing header">学籍信息</h4>
+            <div class="field">
+                <div class="ui labeled input">
+                    <div class="ui label" style="text-align: center;width: 80px">学校</div>
+                    <input name="school" type="text" th:value="${information.school}" placeholder="School" onfocus="this.blur()">
+                </div>
+            </div>
+            <div class="field">
+                <div class="two fields">
+                    <div class="field">
+                        <div class="ui labeled input">
+                            <div class="ui label" style="text-align: center;width: 80px">学号</div>
+                            <input name="studentId" type="text" th:value="${information.student_id}" placeholder="Student Id" onfocus="this.blur()">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui labeled input">
+                            <div class="ui label" style="text-align: center;width: 80px">导师</div>
+                            <input name="tutor" type="text" th:value="${information.teacher}" placeholder="Tutor" onfocus="this.blur()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="ui dividing header">报名信息</h4>
+            <div class="field">
+                <div class="fields">
+                    <div class="field">
+                        <div class="ui labeled input">
+                            <div class="ui label" style="text-align: center;width: 80px">参赛类型</div>
+                            <input id="entryType" type="text" placeholder="个人参赛" onfocus="this.blur()">
+                        </div>
+                    </div>
+                    <div class="eleven wide field">
+                        <div class="ui labeled input">
+                            <div class="ui label" style="text-align: center;width: 80px">作品名称</div>
+                            <input name="title" type="text" th:value="${information.title}" placeholder="Title" onfocus="this.blur()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field">
+                    <div class="ui labeled input">
+                        <div class="ui label" style="text-align: center;width: 80px">作品简介</div>
+                        <textarea name="title" type="text" th:text="${information.content}" onfocus="this.blur()"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="ui dividing header">相关文件</h4>
+            <div class="field">
+                <div class="ui action input">
+                    <img class="ui centered massive image" th:src="${information.file}" src="../../static/upload/imgs/1620779081815_home.jpg">
+                </div>
+            </div>
+
+            <a th:href="@{/admin/information/checkInformation(information_id=${information.id},competition_id=${competition_id})}" class="ui large fluid teal button">审核通过</a>
+        </form>
+
+    </div>
+</div>
+<br>
+<br>
+
+<!-- 底部 -->
+<footer class="ui inverted vertical segment m-padded-tb-large-half" th:replace="admin/_fragment_admin :: footer"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+</body>
+</html>

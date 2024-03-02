@@ -1,0 +1,40 @@
+server:
+  port: 8002
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/competition_web?useUnicode=true&serverTimezone=UTC
+    username: root
+    password: 123456
+  thymeleaf:
+    mode: HTML
+    cache: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  mail:
+    host: smtp.yeah.net
+    username: 
+    password: 
+    protocol: SMTP
+    templatePath: templates/mailTemplate.html
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    jedis:
+      pool:
+        max-active: 10
+        max-wait: 3000
+        max-idle: 8
+        min-idle: 0
+    connect-timeout: 5000
+
+logging:
+  level:
+    root: info
+    com.hunau.competition: debug
+  file:
+    name: log/competition-pro.log

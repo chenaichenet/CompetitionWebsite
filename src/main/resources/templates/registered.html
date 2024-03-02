@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: head(~{::title})">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>注册</title>
+    <!--    上面可以使用fragment定义公共部分-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/my.css}" href="../static/css/my.css"/>
+    <link rel="icon" href="../static/images/material/favicon.ico" th:href="@{/images/material/favicon.ico}">
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragment :: menu(null)" class="ui segment m-padded-tb-mini"></nav>
+
+<!-- 中间内容 -->
+<div class="m-container" style="max-width: 30em !important;">
+    <div class="ui container">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <h2 class="ui teal image header">
+                    <img class="image" src="../static/images/material/logo.png" th:src="@{/images/material/logo.png}">
+                    <div class="content">
+                        Sign-up to your account
+                    </div>
+                </h2>
+                <form action="#" class="ui large form" method="post" th:action="@{/registered}">
+                    <div class="ui segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input id="username" name="username" placeholder="用户名" type="text">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input id="password" name="password" placeholder="密码" type="password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input id="password_ok" name="password_ok" placeholder="确认密码" type="password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="envelope icon"></i>
+                                <input id="email" name="email" placeholder="邮箱" type="email">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="code icon"></i>
+                                <input id="verCode" name="verCode" placeholder="验证码" type="text">
+                                <input id="verCodeBtn" type="button" class="ui primary button" value="获取验证码" th:href="@{/user/verCode}" onclick="setTime(this);getEmail()"/>
+                            </div>
+                        </div>
+                        <br>
+                        <button class="ui fluid large teal submit button">Sign Up</button>
+                    </div>
+                    <div class="ui segement checkbox">
+                        <input id="protocol" type="checkbox" name="protocol" class="hidden">
+                        <label for="protocol">我已同意<a href="#">《大学生竞赛网用户使用协议》</a>和<a href="#">《大学生竞赛网隐私政策》</a></label>
+                    </div>
+                    <div class="ui error message mini"></div>
+                    <div class="ui message negative mini" th:text="${message}" th:unless="${#strings.isEmpty(message)}">
+                        <i class="close icon"></i>
+                        <div class="header">提示：</div>
+                        <p>用户名或密码错误</p>
+                    </div>
+                </form>
+                <div class="ui message">
+                    已有账号? <a href="login.html" th:href="@{/toLogin}">Log-in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+<!-- 底部 -->
+<footer th:replace="_fragment :: footer"  class="ui inverted vertical segment m-padded-tb-large-half"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script type="text/javascript">
+    /* 通过按钮中的class值定位到按钮 */
+    $('.menu.toggle').click(function () {
+        /* 点击去除m-mobile-hide样式 */
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+    $('.ui.form').form({
+        fields: {
+            username: {
+                identifier: 'username',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入用户名'
+                }]
+            },
+            password: {
+                identifier: 'password',
+                rules: [{
+                    type: 'length[6]',
+                    prompt: '密码必须至少6个字符'
+                }]
+            },
+            password_ok: {
+                identifier: 'password_ok',
+                rules: [{
+                    type: 'match[password]',
+                    prompt: '两次输入密码必须一致'
+                }]
+            },
+            email: {
+                identifier: 'email',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入邮箱'
+                }]
+            },
+            verCode: {
+                identifier: 'verCode',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入验证码'
+                }]
+            },
+            protocol: {
+                identifier: 'protocol',
+                rules: [{
+                    type: 'checked',
+                    prompt: '请勾选相关协议'
+                }]
+            }
+        }
+    });
+
+    //验证码
+    var counts = 60;
+    function setTime(val) {
+        if(counts == 0) {
+            val.removeAttribute("disabled");
+            val.value = "获取验证码";
+            counts = 60;
+            return false;
+        } else {
+            val.setAttribute("disabled", true);
+            val.value = "重新发送（" + counts + "）";
+            counts--;
+        }
+        setTimeout(function() {
+            setTime(val);
+        }, 1000);
+    }
+    function getEmail(){
+        var email = document.getElementById("email");
+        $.ajax({
+            url: "/user/verCode",
+            type: "GET",
+            data: {"email":email.value},
+        })
+    }
+</script>
+</body>
+</html>
