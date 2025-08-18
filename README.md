@@ -13,11 +13,11 @@ ps：该项目不需要sql脚本，在使用MySQL数据库新建数据库，然�
 
 **竞赛报名系统，毕业设计项目。**
 
-> 地址：（项目升级为博客项目，同款前端）演示地址：https://chenetchen.ltd
+> ~~地址：（项目升级为博客项目，同款前端）演示地址：https://chenetchen.ltd~~
 
 > 项目相关博客：暂无
 
-> Bilibili视频地址：[Java毕业设计-竞赛报名系统](https://www.bilibili.com/video/BV1Z64y1X7ge?share_source=copy_web)
+> ~~Bilibili视频地址：[Java毕业设计-竞赛报名系统](https://www.bilibili.com/video/BV1Z64y1X7ge?share_source=copy_web)~~
 
 该系统采用IntelliJ IDEA，使用Spring Boot框架基于MVC框架进行开发，使用MySQL数据库，利用HTML，JavaScript，Ajax，Thymeleaf模板引擎和Semantic UI完成界面设计。
 
